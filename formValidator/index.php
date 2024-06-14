@@ -20,6 +20,13 @@
             </div>
         </form>
         <?php
+        session_start();
+
+        if (isset($_SESSION['username']) || isset($_COOKIE['username'])) {
+            header("Location: ../inventory/inventory.php");
+            exit();
+        }
+
         if (isset($_POST['login'])) {
             $username = $_POST['username'];
             $password = $_POST['password'];
@@ -36,8 +43,10 @@
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 if (password_verify($password, $row['password'])) {
-                    session_start();
                     $_SESSION['username'] = $username;
+
+                    setcookie('username', $username, time() + (86400 * 10), "/");
+
                     header("Location: ../inventory/inventory.php");
                     exit();
                 } else {

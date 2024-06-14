@@ -26,7 +26,7 @@
             $check_username_query = "SELECT * FROM user WHERE username = '$username'";
             $check_username_result = $conn->query($check_username_query);
             if ($check_username_result->num_rows > 0) {
-                echo "<p class='message'>Error: Username already exists</p>";
+                echo "<p class='message'>Username already exists</p>";
                 $conn->close();
                 exit;
             }
