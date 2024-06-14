@@ -1,13 +1,17 @@
 <?php
 include 'koneksi.php';
+session_start();
 
-// Menambahkan barang baru
+if (!isset($_SESSION['username']) && !isset($_COOKIE['username'])) {
+    header("Location: ../formvalidator/index.php");
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $stock = $_POST['stock'];
     $price = $_POST['price'];
 
-    // Cek apakah nama barang sudah ada
     $sql = "SELECT COUNT(*) AS count FROM items WHERE name = '$name'";
     $result = $connection->query($sql);
     $row = $result->fetch_assoc();
@@ -15,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($row['count'] > 0) {
         $error_message = "Nama barang sudah ada. Tidak bisa menambah barang yang sama.";
     } else {
-        // Mendapatkan ID terakhir yang digunakan dan menambahkannya dengan 1
         $sql = "SELECT MAX(id) AS max_id FROM items";
         $result = $connection->query($sql);
         $row = $result->fetch_assoc();
@@ -30,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Mengambil data barang dari database
 $sql = "SELECT * FROM items";
 $result = $connection->query($sql);
 ?>
@@ -53,6 +55,7 @@ $result = $connection->query($sql);
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Products</a></li>
                 <li><a href="#">Contact</a></li>
+                <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
     </nav>
