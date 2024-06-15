@@ -6,7 +6,6 @@ if (isset($_GET['id'])) {
     $sql = "DELETE FROM items WHERE id=$id";
     $connection->query($sql);
 
-    // Update ID untuk memastikan tidak ada lonjakan ID
     $sql = "SET @count = 0";
     $connection->query($sql);
     $sql = "UPDATE items SET id = @count := @count + 1";
